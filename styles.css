@@ -1,3 +1,4 @@
+/* style for the page layout */
 .footer { 
     position: absolute; 
     right: 0;
@@ -10,10 +11,46 @@
 }
 
 .unselect_title {
+    font-weight: 900;
+    font-size: xx-large;
     color: #d3d4d3; 
     font-family: Khula, sans-serif; 
-    align-items: center;
     text-align: center;
+}
+
+.unselect_subtitle {
+    font-weight: 50;
+    font-size: large;
+    color: #d3d4d3; 
+    font-family: Khula, sans-serif; 
+    text-align: center;
+}
+
+.main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 500px;
+    height: 100%;
+    width: 70%;
+}
+
+.navigation {
+    position: fixed;
+    right: 0;
+    width: 30%;
+    top: 0;
+    bottom: 0;
+    background-color: #EEE;
+    z-index: -1;
+}
+
+.canvas_style {
+    padding-left: 0;
+    padding-right: 0;
+    height: 85%;
+    width: 100%;
+    align-items: center;;
 }
 
 
