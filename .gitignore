@@ -1,0 +1,5 @@
+# actively ignoring the virtual environment
+.venv_wind
+
+# ignore the manim generated folder
+media
