@@ -35,7 +35,6 @@ class PressureCenter {
     }
 }
 
-
 class IsobarPixel {
     constructor(x_canvas, y_canvas, color, opacity) {
         ctx.beginPath();
@@ -46,13 +45,11 @@ class IsobarPixel {
     }
 }
 
-
 class Arrow {
     constructor(start, end, color) {
 
     }
 }
-
 
 class IsobarField {
     constructor(scalar_field, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-5, 5]) {
@@ -89,13 +86,7 @@ class IsobarField {
 }
 
 
-// Verlet integrator
-function verlet_step() {
-    
-}
-
-
-// pressure field class
+// pressure field "class"
 class PressureField {
     constructor() {
         this.x_high = high_center[0];
@@ -110,53 +101,109 @@ class PressureField {
     // WARUM ERKENNT ER DIE THIS. VARIABLEN NICHT???!?!?!? JS HURENSOHN
     get_pressure(x, y) {
         const smoothing_factor = 10e-8;
-        let pressure_high = high / (Math.sqrt(((x-x2c(high_center[0])) / 100)**2 + ((y-y2c(high_center[1])) / 100)**2) + smoothing_factor);
-        let pressure_low = low / (Math.sqrt(((x-x2c(low_center[0])) / 100)**2 + ((y-y2c(low_center[1])) / 100)**2) + smoothing_factor);
+        let pressure_high = high / (Math.sqrt(((x-x2c(high_center[0])) / 100)**2 + ((y-y2c(high_center[1])) / 10**(2+y_stretch))**2) + smoothing_factor);
+        let pressure_low = low / (Math.sqrt(((x-x2c(low_center[0])) / 100)**2 + ((y-y2c(low_center[1])) / 10**(2+y_stretch))**2) + smoothing_factor);
         return pressure_high + pressure_low;
     } 
 
     get_pgf(state_array) {
-
+        let f_state;
     }
 
     get_coriolis_force(state_array) {
         
     }
 
+    // calculates derivative array with respect to the friction force given a state
     get_friction_force(state_array) {
-        
+        v_x = state_array[2];
+        v_y = state_array[3];
+        f_x = -gamma * v_x;
+        f_y = -gamma * v_y;
+        return [v_x, v_y, f_x, f_y];
     }
 }
 
 
+// ++++++++++ PARAMETER SECTION ++++++++++
 
 // parameters of the pressure field
-let high = 5                            // pressure level of the 'high' (symbolic)
-let low = -5                            // pressure level of the 'low' (symbolic)
+let high = 5                                    // pressure level of the 'high' (symbolic)
+let low = -5                                    // pressure level of the 'low' (symbolic)
 
-let high_center = [4, 0];               // center of the 'high' (USER OPTION)
-let low_center = [-4, 0];               // center of the 'low' (USER OPTION)
+let high_center = [4, 0];                       // center of the 'high' (USER OPTION)
+let low_center = [-4, 0];                       // center of the 'low' (USER OPTION)
 
-let equilines = 23;                     // number of isobars minus 1 (USER OPTION)
+let equilines = 23;                             // number of isobars minus 1 (USER OPTION)
+let y_stretch = 0;                              // logarithmic zoom regarding the y-coordinate (USER OPTION, between 0 and 1)
 
 
 // parameters of the system 
-let rho = 0.4;                          // air density (USER OPTION)
-let gamma = 0.3;                        // friction coefficient (USER OPTION)
-let omega = -0.6;                       // angular velocity of the earth (USER OPTION)
-let latitude = 45;                      // latitude in degrees (symbolic)
+let rho = 0.4;                                  // air density (USER OPTION)
+let gamma = 0.3;                                // friction coefficient (USER OPTION)
+let omega = -0.6;                               // angular velocity of the earth (USER OPTION)
+let latitude = 45;                              // latitude in degrees (symbolic)
 
 
 // integration parameters
-let dt = 0.01;                          // stepsize of the numerical integration
-let t = 0;                              // starting time set to 0
-let T_max = 20;                         // simulation duration (USER OPTION)
+let delta_t = 0.01;                             // stepsize of the numerical integration
+let t = 0;                                      // starting time set to 0
+let T_max = 20;                                 // simulation duration (USER OPTION)
+
 
 // initial condition
-let state_array = [2, 1, 0, 0];         // initial state of the air mass (USER OPTION)
+let init_state_array = [2, 1, 0, 0];            // initial state of the air mass (USER OPTION)
 
 
+// animation checks
+let coriolis_force = 0;                         // bool: will coriolis force be considered (USER OPTION)
+let friction_force = 0;                         // bool: will friction force be considered (USER OPTION)
+
+// ++++++++++ PARAMETER SECTION ++++++++++
 
 
+// building the time-independent field
 const pressure_field = new PressureField();
 const isobar_field = new IsobarField(pressure_field.get_pressure, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-7, 7]);
+
+
+
+
+// animated objects
+const air_mass = {
+
+}
+
+const speed_arrow = {
+
+}
+
+const pgf_arrow = {
+
+}
+
+const coriolis_arrow = {
+
+} 
+
+const friction_arrow = {
+
+}
+
+
+// Verlet integrator
+function verlet_step(state_array, differential_equation) {
+    let a1 = differential_equation(state_array);
+    state_array[0] += a1[0]*delta_t + a1[2]*delta_t**2/2;
+    state_array[1] += a1[1]*delta_t + a1[3]*delta_t**2/2; 
+    let a2 = differential_equation(state_array);
+    state_array[2] += (a1[2] + a2[2]) * delta_t/2;
+    state_array[3] += (a1[3] + a2[3]) * delta_t/2;
+    return state_array;
+}
+
+
+// draws animation frame 
+function draw_frame() {
+
+} 
