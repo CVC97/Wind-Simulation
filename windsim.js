@@ -282,6 +282,10 @@ const pressure_field = new PressureField();
 const isobar_field = new IsobarField(pressure_field.get_pressure, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-7, 7]);
 
 
+// ++++++++++ MAIN SECTION ++++++++++
+
+let raf;
+
 canvas.addEventListener("mouseover", (e) => {
     raf = window.requestAnimationFrame(draw);
 });
@@ -291,5 +295,11 @@ canvas.addEventListener("mouseout", (e) => {
 });
 
 
-let raf;
-air_mass.draw();
+// could work but requires tweaking
+// var image = new Image();
+// image.src = canvas.toDataURL("images/background.jpg");
+
+// image.style.height = canvas.height;
+// image.style.width = canvas.width;
+
+// document.body.appendChild(image);
