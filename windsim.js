@@ -255,7 +255,9 @@ function verlet_step(state_array) {
 
 // draws animation frame 
 function draw() {
+    // clear canvas, load background image and construct new animation objects
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(base_image, 0, 0);
     air_mass.draw();
 
     // get current state array
@@ -267,39 +269,32 @@ function draw() {
     air_mass.v_x = state_array[2];
     air_mass.v_y = state_array[3];
 
-    new PressureCenter(-1, 2, manim_red, state_array[0]);
-    new PressureCenter(-1, 0, manim_red, state_array[1]);
-
-    new PressureCenter(1, 1, manim_blue, state_array[2]);
-    new PressureCenter(1, -1, manim_blue, state_array[3]);
-
+    // make_base();
     raf = window.requestAnimationFrame(draw);
 } 
 
 
+// ++++++++++ MAIN SECTION ++++++++++
+
 // building the time-independent field
 const pressure_field = new PressureField();
 const isobar_field = new IsobarField(pressure_field.get_pressure, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-7, 7]);
-
-
-// ++++++++++ MAIN SECTION ++++++++++
 
 let raf;
 
 canvas.addEventListener("mouseover", (e) => {
     raf = window.requestAnimationFrame(draw);
 });
-  
+
 canvas.addEventListener("mouseout", (e) => {
     window.cancelAnimationFrame(raf);
 });
 
+base_image = new Image();
+base_image.src = canvas.toDataURL("images/background.jpg");
+image.style.height = canvas.height;
+image.style.width = canvas.width;
 
-// could work but requires tweaking
-// var image = new Image();
-// image.src = canvas.toDataURL("images/background.jpg");
-
-// image.style.height = canvas.height;
-// image.style.width = canvas.width;
-
-// document.body.appendChild(image);
+// FIX: AIR MASS NOT VISIBLE AT START
+air_mass.draw();
+window.requestAnimationFrame(draw);
