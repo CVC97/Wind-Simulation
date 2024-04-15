@@ -1,8 +1,6 @@
 // building canvas
 const canvas = document.getElementById('WindCanvas');
-const canvas_animate = document.getElementById('WindCanvas');
 const ctx = canvas.getContext("2d");
-const ctx_anim = canvas_animate.getContext("2d");
 
 
 // definitions
@@ -192,12 +190,12 @@ const air_mass = {
     v_y: -init_state_array[3] * 100,
     sidelength: 30,
     draw() {
-        ctx_anim.beginPath();
-        ctx_anim.rect(this.x-this.sidelength/2, this.y-this.sidelength/2, this.sidelength, this.sidelength);
-        ctx_anim.lineWidth = 10;
-        ctx_anim.fillStyle = "white";
-        ctx_anim.globalAlpha = 1;
-        ctx_anim.fill();     
+        ctx.beginPath();
+        ctx.rect(this.x-this.sidelength/2, this.y-this.sidelength/2, this.sidelength, this.sidelength);
+        ctx.lineWidth = 10;
+        ctx.fillStyle = "white";
+        ctx.globalAlpha = 1;
+        ctx.fill();     
     },
     
 }
@@ -257,7 +255,7 @@ function verlet_step(state_array) {
 
 // draws animation frame 
 function draw() {
-    ctx_anim.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     air_mass.draw();
 
     // get current state array
@@ -284,11 +282,11 @@ const pressure_field = new PressureField();
 const isobar_field = new IsobarField(pressure_field.get_pressure, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-7, 7]);
 
 
-canvas_animate.addEventListener("mouseover", (e) => {
+canvas.addEventListener("mouseover", (e) => {
     raf = window.requestAnimationFrame(draw);
 });
   
-canvas_animate.addEventListener("mouseout", (e) => {
+canvas.addEventListener("mouseout", (e) => {
     window.cancelAnimationFrame(raf);
 });
 
