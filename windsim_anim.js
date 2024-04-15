@@ -108,32 +108,23 @@ class PressureField {
         return pressure_high + pressure_low;
     } 
 
-    get_pressure_fuck_factor(x, y) {
-        const smoothing_factor = 10e-8;
-        let pressure_high = high / (Math.sqrt((x-x2c(this.x_high))**2 + (y-y2c(this.y_high))**2) + smoothing_factor);
-        let pressure_low = low / (Math.sqrt((x-x2c(this.x_low))**2 + (y-y2c(this.y_low))**2) + smoothing_factor);
-        return pressure_high + pressure_low;
-    } 
-
     // calculates force array under influence of the pressure gradient force given the state of the air block
     get_pgf(state_array) {
         let x = state_array[0];
         let y = state_array[1];
-        let v_x = state_array[2];
-        let v_y = state_array[3];
-        let dr = 0.001;
+        dr = 0.00001;
         let f_grad_x = -1/rho * (this.get_pressure(x+dr, y) - this.get_pressure(x-dr, y)) / (2*dr);
         let f_grad_y = -1/rho * (this.get_pressure(x, y+dr) - this.get_pressure(x, y-dr)) / (2*dr);
-        return [v_x, v_y, f_grad_x, f_grad_y];
+        return [v_x, v_y, f_grad_x, f_grad_y]
     }
     
     // calculates force array with respect to the coriolis force given a state
     get_coriolis_force(state_array) {
-        let v_x = state_array[2];
-        let v_y = state_array[3];
-        let f_coriolis_x = -omega * v_y * 2*Math.sin(latitude * 2*Math.PI / 360);
-        let f_coriolis_y = omega * v_x * 2*Math.sin(latitude * 2*Math.PI / 360);
-        return [v_x, v_y, f_coriolis_x, f_coriolis_y];
+        let v_x = state_array[2]
+        let v_y = state_array[3]
+        let f_coriolis_x = -omega * v_y * 2*np.sin(latitude * 2*PI / 360);
+        let f_coriolis_y = omega * v_x * 2*np.sin(latitude * 2*PI / 360);
+        return [v_x, v_y, f_coriolis_x, f_coriolis_y]
     }
 
     // calculates force array with respect to the friction force given a state
@@ -153,32 +144,32 @@ class PressureField {
 let high = 5                                    // pressure level of the 'high' (symbolic)
 let low = -5                                    // pressure level of the 'low' (symbolic)
 
-let high_center = [3.5, 0];                       // center of the 'high' (USER OPTION)
-let low_center = [-3.5, 0];                       // center of the 'low' (USER OPTION)
+let high_center = [4, 0];                       // center of the 'high' (USER OPTION)
+let low_center = [-4, 0];                       // center of the 'low' (USER OPTION)
 
 let equilines = 13;                             // number of isobars minus 1 (USER OPTION)
 let y_stretch = 0;                              // logarithmic zoom regarding the y-coordinate (USER OPTION, between 0 and 1)
 
 
 // parameters of the system 
-let rho = 0.003;                                  // air density (USER OPTION)
+let rho = 0.4;                                  // air density (USER OPTION)
 let gamma = 0.3;                                // friction coefficient (USER OPTION)
-let omega = 0.25;                                // angular velocity of the earth (USER OPTION)
+let omega = -0.6;                               // angular velocity of the earth (USER OPTION)
 let latitude = 45;                              // latitude in degrees (symbolic)
 
 
 // integration parameters
-let delta_t = 0.05;                             // stepsize of the numerical integration
+let delta_t = 0.01;                             // stepsize of the numerical integration
 let t = 0;                                      // starting time set to 0
 let T_max = 20;                                 // simulation duration (USER OPTION)
 
 
 // initial condition
-let init_state_array = [2, 1, 0, 0];            // initial state of the air mass (USER OPTION)
+let init_state_array = [3, 1, 0, 0];            // initial state of the air mass (USER OPTION)
 
 
 // animation checks
-let bool_coriolis_force = 1;                    // bool: will coriolis force be considered (USER OPTION)
+let bool_coriolis_force = 0;                    // bool: will coriolis force be considered (USER OPTION)
 let bool_friction_force = 0;                    // bool: will friction force be considered (USER OPTION)
 
 // ++++++++++ PARAMETER SECTION ++++++++++
@@ -188,8 +179,8 @@ let bool_friction_force = 0;                    // bool: will friction force be 
 const air_mass = {
     x: x2c(init_state_array[0]),
     y: y2c(init_state_array[1]),
-    v_x: init_state_array[2] * 100,
-    v_y: -init_state_array[3] * 100,
+    v_x: x2c(init_state_array[2]),
+    v_y: y2c(init_state_array[3]),
     sidelength: 30,
     draw() {
         ctx_anim.beginPath();
@@ -199,7 +190,6 @@ const air_mass = {
         ctx_anim.globalAlpha = 1;
         ctx_anim.fill();     
     },
-    
 }
 
 const speed_arrow = {
@@ -219,39 +209,16 @@ const friction_arrow = {
 }
 
 
-// Verlet integrator depending on the integration requests (coriolis / friction)
-function verlet_step(state_array) {
-    let a1_pgf = pressure_field.get_pgf(state_array);
-    if (bool_coriolis_force) {
-        let a1_coriolis_force = pressure_field.get_coriolis_force(state_array); 
-        for (let i = 0; i < 4; i += 1) {
-            a1_pgf[i] += a1_coriolis_force[i];
-        }
-    }  
-    if (bool_friction_force) {
-        let a1_friction_force = pressure_field.get_friction_force(state_array);
-        for (let i = 0; i < 4; i += 1) {
-            a1_pgf[i] += a1_friction_force[i];
-        }   
-    }
-    state_array[0] += a1_pgf[0]*delta_t + a1_pgf[2]*delta_t**2/2;
-    state_array[1] += a1_pgf[1]*delta_t + a1_pgf[3]*delta_t**2/2; 
-    let a2_pgf = pressure_field.get_pgf(state_array);
-    if (bool_coriolis_force) {
-        let a2_coriolis_force = pressure_field.get_coriolis_force(state_array); 
-        for (let i = 0; i < 4; i += 1) {
-            a2_pgf[i] += a2_coriolis_force[i];
-        }
-    }  
-    if (bool_friction_force) {
-        let a2_friction_force = pressure_field.get_friction_force(state_array);
-        for (let i = 0; i < 4; i += 1) {
-            a2_pgf[i] += a2_friction_force[i];
-        }   
-    }
-    state_array[2] += (a1_pgf[2] + a2_pgf[2]) * delta_t/2;
-    state_array[3] += (a1_pgf[3] + a2_pgf[3]) * delta_t/2;
-    return state_array;
+// Verlet integrator (OUT OF ORDER)
+function verlet_step(state_array, differential_equation) {
+    let new_state = [state_array[0], state_array[1], state_array[2], state_array[3]];
+    let a1 = differential_equation(new_state);
+    new_state[0] += a1[0]*delta_t + a1[2]*delta_t**2/2;
+    new_state[1] += a1[1]*delta_t + a1[3]*delta_t**2/2; 
+    let a2 = differential_equation(new_state);
+    new_state[2] += (a1[2] + a2[2]) * delta_t/2;
+    new_state[3] += (a1[3] + a2[3]) * delta_t/2;
+    return new_state;
 }
 
 
@@ -261,22 +228,43 @@ function draw() {
     air_mass.draw();
 
     // get current state array
-    let state_array = verlet_step([air_mass.x, air_mass.y, air_mass.v_x, air_mass.v_y]);
+    let state_array = [air_mass.x, air_mass.y, air_mass.v_x, air_mass.v_y];
+    let force_array = [];
+
+    // pressure gradient force
+    let pgf = PressureField.get_pgf(state_array);
+    for (let i = 0; i < 4; i += 1) {
+        force_array[i] = pgf[i];
+    }
+
+    // // coriolis force
+    // if (bool_coriolis_force) {
+    //     let coriolis_force = PressureField.get_coriolis_force(state_array);
+    //     for (let i = 0; i < 4; i += 1) {
+    //         force_array[i] += coriolis_force[i];
+    //     }
+    // }
+
+    // // friction force
+    // if (bool_friction_force) {
+    //     let friction_force = PressureField.get_friction_force(state_array);
+    //     for (let i = 0; i < 4; i += 1) {
+    //         force_array[i] += friction_force[i];
+    //     }       
+    // }
 
     // new state of the air mass
-    air_mass.x = state_array[0];
-    air_mass.y = state_array[1];
-    air_mass.v_x = state_array[2];
-    air_mass.v_y = state_array[3];
+    // air_mass.x += force_array[0]*delta_t;
+    // air_mass.y += force_array[1]*delta_t;
+    // air_mass.v_x += force_array[2]*delta_t;
+    // air_mass.v_y = force_array[3]*delta_t;
 
-    new PressureCenter(-1, 2, manim_red, state_array[0]);
-    new PressureCenter(-1, 0, manim_red, state_array[1]);
-
-    new PressureCenter(1, 1, manim_blue, state_array[2]);
-    new PressureCenter(1, -1, manim_blue, state_array[3]);
+    air_mass.x += 1;
+    air_mass.y += 1;
 
     raf = window.requestAnimationFrame(draw);
 } 
+
 
 
 // building the time-independent field
@@ -291,7 +279,6 @@ canvas_animate.addEventListener("mouseover", (e) => {
 canvas_animate.addEventListener("mouseout", (e) => {
     window.cancelAnimationFrame(raf);
 });
-
 
 let raf;
 air_mass.draw();
