@@ -45,9 +45,37 @@ class IsobarPixel {
     }
 }
 
-class Arrow {
-    constructor(start, end, color) {
 
+class Arrow {
+    constructor(start, end, color = "white", stroke_width = 4, stroke_dash = []) {
+        this.x_start = start[0];
+        this.y_start = start[1];
+        this.x_end = end[0];
+        this.y_end = end[1];
+
+        ctx.beginPath();
+        ctx.moveTo(this.x_start, this.y_start);
+        ctx.lineTo(this.x_end, this.y_end);
+        ctx.lineWidth = stroke_width;
+        ctx.strokeStyle = color;
+        ctx.setLineDash(stroke_dash);
+
+        this.end_start_vector_length = Math.sqrt((this.x_end-this.x_start)**2 + (this.y_end-this.y_start)**2);
+        this.tip_line_factor = 20;
+        this.tip_line = [(this.x_start-this.x_end) / this.end_start_vector_length * this.tip_line_factor, (this.y_start-this.y_end) / this.end_start_vector_length * this.tip_line_factor];
+        this.tip_line_angle = Math.PI / 6;
+
+        ctx.moveTo(this.x_end, this.y_end);
+        ctx.lineTo(
+            this.x_end + Math.cos(this.tip_line_angle)*this.tip_line[0] - Math.sin(this.tip_line_angle)*this.tip_line[1], 
+            this.y_end + Math.sin(this.tip_line_angle)*this.tip_line[0] + Math.cos(this.tip_line_angle)*this.tip_line[1]
+        );
+        ctx.moveTo(this.x_end, this.y_end);
+        ctx.lineTo(
+            this.x_end + Math.cos(-this.tip_line_angle)*this.tip_line[0] - Math.sin(-this.tip_line_angle)*this.tip_line[1], 
+            this.y_end + Math.sin(-this.tip_line_angle)*this.tip_line[0] + Math.cos(-this.tip_line_angle)*this.tip_line[1]
+        );
+        ctx.stroke();
     }
 }
 
@@ -98,18 +126,11 @@ class PressureField {
         new PressureCenter(this.x_high, this.y_high, manim_red, "H");
         new PressureCenter(this.x_low, this.y_low, manim_blue, "L");
     } 
-    // WARUM ERKENNT ER DIE THIS. VARIABLEN NICHT???!?!?!? JS HURENSOHN
+    // WARUM ERKENNT ER DIE THIS. VARIABLEN NICHT???!?!?!?
     get_pressure(x, y) {
         const smoothing_factor = 10e-8;
         let pressure_high = high / (Math.sqrt(((x-x2c(high_center[0])) / 100)**2 + ((y-y2c(high_center[1])) / 10**(2+y_stretch))**2) + smoothing_factor);
         let pressure_low = low / (Math.sqrt(((x-x2c(low_center[0])) / 100)**2 + ((y-y2c(low_center[1])) / 10**(2+y_stretch))**2) + smoothing_factor);
-        return pressure_high + pressure_low;
-    } 
-
-    get_pressure_fuck_factor(x, y) {
-        const smoothing_factor = 10e-8;
-        let pressure_high = high / (Math.sqrt((x-x2c(this.x_high))**2 + (y-y2c(this.y_high))**2) + smoothing_factor);
-        let pressure_low = low / (Math.sqrt((x-x2c(this.x_low))**2 + (y-y2c(this.y_low))**2) + smoothing_factor);
         return pressure_high + pressure_low;
     } 
 
@@ -145,30 +166,29 @@ class PressureField {
 }
 
 
+
 // ++++++++++ PARAMETER SECTION ++++++++++
 
 // parameters of the pressure field
 let high = 5                                    // pressure level of the 'high' (symbolic)
 let low = -5                                    // pressure level of the 'low' (symbolic)
 
-let high_center = [3.5, 0];                       // center of the 'high' (USER OPTION)
-let low_center = [-3.5, 0];                       // center of the 'low' (USER OPTION)
+let high_center = [3.5, 0];                     // center of the 'high' (USER OPTION)
+let low_center = [-3.5, 0];                     // center of the 'low' (USER OPTION)
 
 let equilines = 13;                             // number of isobars minus 1 (USER OPTION)
 let y_stretch = 0;                              // logarithmic zoom regarding the y-coordinate (USER OPTION, between 0 and 1)
 
 
 // parameters of the system 
-let rho = 0.003;                                  // air density (USER OPTION)
+let rho = 0.003;                                // air density (USER OPTION)
 let gamma = 0.3;                                // friction coefficient (USER OPTION)
-let omega = 0.25;                                // angular velocity of the earth (USER OPTION)
+let omega = 0.25;                               // angular velocity of the earth (USER OPTION)
 let latitude = 45;                              // latitude in degrees (symbolic)
 
 
 // integration parameters
-let delta_t = 0.05;                             // stepsize of the numerical integration
-let t = 0;                                      // starting time set to 0
-let T_max = 20;                                 // simulation duration (USER OPTION)
+let delta_t = 0.025;                            // stepsize of the numerical integration / animation speed (USER OPTION)
 
 
 // initial condition
@@ -178,20 +198,22 @@ let init_state_array = [2, 1, 0, 0];            // initial state of the air mass
 // animation checks
 let bool_coriolis_force = 1;                    // bool: will coriolis force be considered (USER OPTION)
 let bool_friction_force = 0;                    // bool: will friction force be considered (USER OPTION)
+let arrow_stretch = 12;                         // stretches arrows with a consistent factor (symbolic)
 
 // ++++++++++ PARAMETER SECTION ++++++++++
 
 
+
 // animated objects
 const air_mass = {
-    x: x2c(init_state_array[0]),
-    y: y2c(init_state_array[1]),
-    v_x: init_state_array[2] * 100,
-    v_y: -init_state_array[3] * 100,
+    state: [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]],
     sidelength: 30,
     draw() {
+        x = this.state[0];
+        y = this.state[1];
+
         ctx.beginPath();
-        ctx.rect(this.x-this.sidelength/2, this.y-this.sidelength/2, this.sidelength, this.sidelength);
+        ctx.rect(x-this.sidelength/2, y-this.sidelength/2, this.sidelength, this.sidelength);
         ctx.lineWidth = 10;
         ctx.fillStyle = "white";
         ctx.globalAlpha = 1;
@@ -201,19 +223,79 @@ const air_mass = {
 }
 
 const speed_arrow = {
-    
+    state: [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]],
+    draw() {
+        let x = this.state[0];
+        let y = this.state[1];
+        let v_x = this.state[2];
+        let v_y = this.state[3];
+
+        new Arrow(start = [x, y], end = [x+v_x*arrow_stretch, y+v_y*arrow_stretch], color = "white", stroke_width = 4, stroke_dash = [5, 5]);
+    }
 }
 
 const pgf_arrow = {
-    
+    state: [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]],
+    draw() {
+        let x = this.state[0];
+        let y = this.state[1];
+        let f_state = pressure_field.get_pgf(this.state);
+        let f_x = f_state[2];
+        let f_y = f_state[3];
+
+        new Arrow(start = [x, y], end = [x+f_x*arrow_stretch, y+f_y*arrow_stretch], color = manim_red)
+    }
 }
 
 const coriolis_arrow = {
-    
+    state: [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]],
+    draw() {
+        let x = this.state[0];
+        let y = this.state[1];
+        let f_state = pressure_field.get_coriolis_force(this.state);
+        let f_x = f_state[2];
+        let f_y = f_state[3];
+
+        new Arrow(start = [x, y], end = [x+f_x*arrow_stretch, y+f_y*arrow_stretch], color = "#D3D3D3")
+    }
 } 
 
 const friction_arrow = {
-    
+    state: [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]],
+    draw() {
+        let x = this.state[0];
+        let y = this.state[1];
+        let f_state = pressure_field.get_friction_force(this.state);
+        let f_x = f_state[2];
+        let f_y = f_state[3];
+
+        new Arrow(start = [x, y], end = [x+f_x*arrow_stretch, y+f_y*arrow_stretch], color = "black")
+    }
+}
+
+
+const total_arrow = {
+    state: [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]],
+    draw() {
+        let x = this.state[0];
+        let y = this.state[1];
+        let f_state_pgf = pressure_field.get_pgf(this.state);
+        let f_state_coriolis = pressure_field.get_coriolis_force(this.state);
+        let f_state_friction = pressure_field.get_friction_force(this.state);
+        let f_x = f_state_pgf[2];
+        let f_y = f_state_pgf[3];
+
+        if (bool_coriolis_force) {
+            f_x += f_state_coriolis[2];
+            f_y += f_state_coriolis[3];
+        }
+        if (bool_friction_force) {
+            f_x += f_state_friction[2];
+            f_y += f_state_friction[3];
+        }
+
+        new Arrow(start = [x, y], end = [x+f_x*arrow_stretch, y+f_y*arrow_stretch], color = "black")
+    }
 }
 
 
@@ -255,23 +337,39 @@ function verlet_step(state_array) {
 
 // draws animation frame 
 function draw() {
-    // clear canvas, load background image and construct new animation objects
+    // clear canvas and load background image 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(base_image, 0, 0);
+
+    // construct new animation objects
     air_mass.draw();
+    speed_arrow.draw();
+    if (bool_coriolis_force) {
+        pgf_arrow.draw();
+        coriolis_arrow.draw();
+    }
+    if (bool_friction_force) {
+        friction_arrow.draw();
+    }
+    total_arrow.draw();
 
-    // get current state array
-    let state_array = verlet_step([air_mass.x, air_mass.y, air_mass.v_x, air_mass.v_y]);
-
-    // new state of the air mass
-    air_mass.x = state_array[0];
-    air_mass.y = state_array[1];
-    air_mass.v_x = state_array[2];
-    air_mass.v_y = state_array[3];
+    // get current state array and transfer it to the animation objects
+    let state_array = verlet_step(air_mass.state);
+    air_mass.state = state_array;
+    speed_arrow.state = state_array;
+    total_arrow.state = state_array;
+    if (bool_coriolis_force) {
+        pgf_arrow.state = state_array;
+        coriolis_arrow.state = state_array;
+    }
+    if (bool_friction_force) {
+        friction_arrow.state = state_array;
+    }
 
     // make_base();
     raf = window.requestAnimationFrame(draw);
 } 
+
 
 
 // ++++++++++ MAIN SECTION ++++++++++
@@ -280,6 +378,7 @@ function draw() {
 const pressure_field = new PressureField();
 const isobar_field = new IsobarField(pressure_field.get_pressure, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-7, 7]);
 
+// animation starts here
 let raf;
 
 canvas.addEventListener("mouseover", (e) => {
@@ -292,9 +391,6 @@ canvas.addEventListener("mouseout", (e) => {
 
 base_image = new Image();
 base_image.src = canvas.toDataURL("images/background.jpg");
-image.style.height = canvas.height;
-image.style.width = canvas.width;
 
-// FIX: AIR MASS NOT VISIBLE AT START
+// FIX: AIR MASS now VISIBLE AT START
 air_mass.draw();
-window.requestAnimationFrame(draw);
