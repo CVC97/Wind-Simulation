@@ -1,5 +1,5 @@
 // building canvas
-const canvas = document.getElementById('WindCanvas');
+const canvas = document.getElementById("WindCanvas");
 const ctx = canvas.getContext("2d");
 
 
@@ -18,7 +18,10 @@ function y2c(y) {
 }
 
 
-// geometric classes
+
+// ++++++++++ GEOMETRIC CLASSES SECTION ++++++++++
+
+// draws a center of high / low pressure given natural coordinates, color, and content
 class PressureCenter {
     constructor(x, y, color, descriptor) {
         ctx.beginPath();
@@ -35,6 +38,7 @@ class PressureCenter {
     }
 }
 
+// colors a pixel at canvas coordinates given color and opacity
 class IsobarPixel {
     constructor(x_canvas, y_canvas, color, opacity) {
         ctx.beginPath();
@@ -45,7 +49,7 @@ class IsobarPixel {
     }
 }
 
-
+// draws an arrow given start / end point, color, width, and stroke dash
 class Arrow {
     constructor(start, end, color = "white", stroke_width = 4, stroke_dash = []) {
         this.x_start = start[0];
@@ -79,8 +83,9 @@ class Arrow {
     }
 }
 
+// draws isobars for a given field, natural start / end coordinates, as well as range and number of isobars 
 class IsobarField {
-    constructor(scalar_field, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-5, 5]) {
+    constructor(scalar_field, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-5, 5], equilines = 13) {
         this.x_canvas_min = x2c(x_range[0]);
         this.x_canvas_max = x2c(x_range[1]);
         this.y_canvas_min = y2c(y_range[0]);
@@ -114,7 +119,9 @@ class IsobarField {
 }
 
 
-// pressure field "class"
+
+// ++++++++++ PRESSURE FIELD CLASS ++++++++++
+
 class PressureField {
     constructor() {
         this.x_high = high_center[0];
@@ -182,8 +189,8 @@ let y_stretch = 0;                              // logarithmic zoom regarding th
 
 // parameters of the system 
 let rho = 0.003;                                // air density (USER OPTION)
-let gamma = 0.3;                                // friction coefficient (USER OPTION)
 let omega = 0.25;                               // angular velocity of the earth (USER OPTION)
+let gamma = 0.3;                                // friction coefficient (USER OPTION)
 let latitude = 45;                              // latitude in degrees (symbolic)
 
 
@@ -200,11 +207,13 @@ let bool_coriolis_force = 1;                    // bool: will coriolis force be 
 let bool_friction_force = 0;                    // bool: will friction force be considered (USER OPTION)
 let arrow_stretch = 12;                         // stretches arrows with a consistent factor (symbolic)
 
-// ++++++++++ PARAMETER SECTION ++++++++++
+let animation_state = 0;                        // sets the animation state (0 for STOPPED, 1 for RUNNING)
+let start_botton_content = "START";             // displayed start button status: 
 
 
 
-// animated objects
+// ++++++++++ ANIMATED OBJECTS SECTION ++++++++++
+
 const air_mass = {
     state: [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]],
     sidelength: 30,
@@ -273,7 +282,6 @@ const friction_arrow = {
     }
 }
 
-
 const total_arrow = {
     state: [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]],
     draw() {
@@ -298,6 +306,9 @@ const total_arrow = {
     }
 }
 
+
+
+// ++++++++++ INTEGRATION AND FRAME STEPS ++++++++++
 
 // Verlet integrator depending on the integration requests (coriolis / friction)
 function verlet_step(state_array) {
@@ -335,11 +346,11 @@ function verlet_step(state_array) {
 }
 
 
-// draws animation frame 
+// draws animation frame, moves animated objects to their next position obtained by calling the integrator 
 function draw() {
     // clear canvas and load background image 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(base_image, 0, 0);
+    ctx.drawImage(save_image, 0, 0);
 
     // construct new animation objects
     air_mass.draw();
@@ -378,19 +389,70 @@ function draw() {
 const pressure_field = new PressureField();
 const isobar_field = new IsobarField(pressure_field.get_pressure, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-7, 7]);
 
-// animation starts here
+// saving the canvas background for new frame and reset
+save_image = new Image();
+save_image.src = canvas.toDataURL("images/save_background.jpg");
+reset_image = new Image();
+reset_image.src = canvas.toDataURL("images/reset_background.jpg");
+
+
+// animation variables
 let raf;
+const start_button = document.getElementById("start_button");
+document.getElementById('start_button').innerHTML = "START";
+const fix_state_button = document.getElementById("fix_state_button");
+const reset_button = document.getElementById("reset_button");
 
-canvas.addEventListener("mouseover", (e) => {
-    raf = window.requestAnimationFrame(draw);
+// start button
+start_button.addEventListener("click", (e) => {
+    if (animation_state == 0) {
+        raf = window.requestAnimationFrame(draw);
+        animation_state = 1;
+        document.getElementById('start_button').innerHTML = "STOP";
+    } else {
+        window.cancelAnimationFrame(raf);
+        animation_state = 0;
+        document.getElementById('start_button').innerHTML = "START";
+    }
 });
 
-canvas.addEventListener("mouseout", (e) => {
-    window.cancelAnimationFrame(raf);
+// save state button
+fix_state_button.addEventListener("click", (e) => {
+    save_image.src = canvas.toDataURL("images/save_background.jpg");
 });
 
-base_image = new Image();
-base_image.src = canvas.toDataURL("images/background.jpg");
+// reset animation button
+reset_button.addEventListener("click", (e) => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(reset_image, 0, 0);
+    save_image.src = canvas.toDataURL("images/save_background.jpg");
+
+    // reset state and transfer it to the animation objects
+    state_array = [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]];
+    air_mass.state = state_array;
+    speed_arrow.state = state_array;
+    total_arrow.state = state_array;
+    if (bool_coriolis_force) {
+        pgf_arrow.state = state_array;
+        coriolis_arrow.state = state_array;
+    }
+    if (bool_friction_force) {
+        friction_arrow.state = state_array;
+    }
+
+    // construct new animation objects
+    air_mass.draw();
+    speed_arrow.draw();
+    if (bool_coriolis_force) {
+        pgf_arrow.draw();
+        coriolis_arrow.draw();
+    }
+    if (bool_friction_force) {
+        friction_arrow.draw();
+    }
+    total_arrow.draw();
+});
+
 
 // FIX: AIR MASS now VISIBLE AT START
 air_mass.draw();

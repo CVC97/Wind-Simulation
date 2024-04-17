@@ -27,22 +27,12 @@
 }
 
 .main {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 500px;
     height: 100%;
-    width: 70%;
-}
-
-.navigation {
-    position: fixed;
-    right: 0;
-    width: 30%;
-    top: 0;
-    bottom: 0;
-    background-color: #EEE;
-    z-index: -1;
+    width: 75%;
 }
 
 .canvas_style {
@@ -53,4 +43,55 @@
     align-items: center;;
 }
 
+.navigation {
+    position: fixed;
+    right: 0;
+    width: 25%;
+    top: 0;
+    bottom: 0;
+    background-color: #EEE;
+    z-index: -1;
+}
 
+/* style for the buttons */
+button {
+    position: relative;
+    /* left: 0;
+    bottom: 0;  */
+    /* margin-bottom: 20px; */
+    line-height: 60px;
+    font-weight: bold;
+    /* padding: 0 30px; */
+    width: 32.5%;
+    background: grey;
+    border: 0;
+}
+
+button:hover {
+    background: lightgrey;
+}
+
+/* style for the operation bar */
+.operation_bar {
+    position: relative;
+    height: 150px;
+    width: 100%;
+}
+
+/* navigation heading style */
+.navigation_headline {
+    font-weight: 800;
+    font-size: large;
+    color: black; 
+    font-family: Khula, sans-serif; 
+    text-align: center;
+    text-align: left;
+    margin-left: 40px;
+}
+
+/* style for the field option bar */
+.field_options {
+    position: relative;
+    height: 100px;
+    width: 100%;
+}
