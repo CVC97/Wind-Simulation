@@ -395,13 +395,15 @@ save_image.src = canvas.toDataURL("images/save_background.jpg");
 reset_image = new Image();
 reset_image.src = canvas.toDataURL("images/reset_background.jpg");
 
-
 // animation variables
 let raf;
 const start_button = document.getElementById("start_button");
 document.getElementById('start_button').innerHTML = "START";
 const fix_state_button = document.getElementById("fix_state_button");
 const reset_button = document.getElementById("reset_button");
+
+const lightmode_check = document.getElementById("lightmode");
+const input_section = document.getElementById("input_section");
 
 // start button
 start_button.addEventListener("click", (e) => {
@@ -426,7 +428,7 @@ reset_button.addEventListener("click", (e) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(reset_image, 0, 0);
     save_image.src = canvas.toDataURL("images/save_background.jpg");
-
+    
     // reset state and transfer it to the animation objects
     state_array = [x2c(init_state_array[0]), y2c(init_state_array[1]), 100*init_state_array[2], -100*init_state_array[3]];
     air_mass.state = state_array;
@@ -439,8 +441,8 @@ reset_button.addEventListener("click", (e) => {
     if (bool_friction_force) {
         friction_arrow.state = state_array;
     }
-
-    // construct new animation objects
+    
+    // reconstruct new animation objects
     air_mass.draw();
     speed_arrow.draw();
     if (bool_coriolis_force) {
@@ -456,3 +458,36 @@ reset_button.addEventListener("click", (e) => {
 
 // FIX: AIR MASS now VISIBLE AT START
 air_mass.draw();
+speed_arrow.draw();
+if (bool_coriolis_force) {
+    pgf_arrow.draw();
+    coriolis_arrow.draw();
+}
+if (bool_friction_force) {
+    friction_arrow.draw();
+}
+total_arrow.draw();
+
+
+function update_input() {
+    new PressureCenter(0,0, manim_blue, "WHY??!?!?!");
+    equilines = parseInt(document.getElementById("number_equilines").value); 
+    rho = parseInt(document.getElementById("number_rho").value); 
+
+    pressure_field = new PressureField();
+    isobar_field = new IsobarField(pressure_field.get_pressure, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-7, 7]);
+}
+
+// function show_image() {
+//     var img = document.createElement("img");
+//     img.src = "images/clown.jpg";
+//     img.width = 500;
+//     img.height = 500;
+//     document.body.appendChild(img);
+// }
+
+
+// connecting number input
+
+input_section.addEventListener("change", update_input);
+lightmode_check.addEventListener("lightmode", show_image);

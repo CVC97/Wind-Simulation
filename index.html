@@ -4,11 +4,15 @@
         <title>Simulating Winds</title>
         <link rel="icon" href="images/icons/wind-icon-logo-3.png">
         <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet objects" href="objectstyles.css">
+        <link rel="stylesheet navigation bar" href="navigation.css">
     </head>
     <body style="background-color:#222;">
         <div class="main">
             <div class="footer"> 2024 Carlo von Carnap, Physik und ihre Didaktik, Georg-August-Universität Göttingen</div>
+            <!-- <div >
+                <input class="checkmark" type="checkbox" id="lightmode" name="lightmode_checkbox" value="dark"/>
+                <script src="windsim.js"></script>
+            </div> -->
             <h1  class="unselect_title"> 
                 <!-- <img src="images/icons/PoseidonPortrait.png" alt="AbstractWind" width="60" height="50">  -->
                 Simulating Winds
@@ -23,16 +27,24 @@
                 <button id="reset_button" align-items="center">RESET</button>
                 <script src="windsim.js"></script>
             </div>
-            <div class="field_options">
-                <hr style="width:90%"> 
-                <h3 class="navigation_headline">Field Options</h3>
-                <hr style="width:90%"> 
-            </div>
-            <div class="field_options">
-                <hr style="width:90%"> 
-                <h3 class="navigation_headline">Geographic Options</h3>
-                <hr style="width:90%"> 
-            </div>
+            <form id="input_section">
+                <div class="field_options">
+                    <hr style="width:90%"> 
+                    <h3 class="navigation_headline">Field Options</h3>
+                    <hr style="width:90%">
+                    <label for="number_equilines">Number of Equilines (5-25):</label> 
+                    <input id="number_equilines" name="number-equilines" type="number-input" value="13" min="5" max="35"/>
+                    <script src="windsim.js"></script>
+                </div>
+                <div class="field_options">
+                    <hr style="width:90%"> 
+                    <h3 class="navigation_headline">Geographic Options</h3>
+                    <hr style="width:90%"> 
+                    <!-- <label for="number_rho">Pressure Gradient Force:</label> 
+                    <input id="number_rho" name="number_rho" type="number-input" value="0.003"/>
+                    <script src="windsim.js"></script> -->
+                </div>
+            </form>
         </div> 
     </body>
 </html> 
