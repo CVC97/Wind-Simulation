@@ -37,7 +37,7 @@ let equilines = 23;                             // number of isobars minus 1 (US
 let y_stretch = 0;                              // logarithmic zoom regarding the y-coordinate (USER OPTION, between 0 and 1)
 
 
-// parameters of the system 
+// physical parameters of the system 
 let rho = 0.003;                                // air density (USER OPTION)
 let omega = 0.25;                               // angular velocity of the earth (USER OPTION)
 let gamma = 0.3;                                // friction coefficient (USER OPTION)
@@ -51,13 +51,12 @@ let delta_t = 0.025;                            // stepsize of the numerical int
 // initial condition
 let init_state_array = [2, 1, 0, 0];            // initial state of the air mass (USER OPTION)
 
+
 // animation checks
 let bool_coriolis_force = 1;                    // bool: will coriolis force be considered (USER OPTION)
 let bool_friction_force = 0;                    // bool: will friction force be considered (USER OPTION)
 
-
 let animation_state = 0;                        // sets the animation state (0 for STOPPED, 1 for RUNNING)
-let start_botton_content = "START";             // displayed start button status: 
 
 
 // parameter bundles
@@ -70,7 +69,7 @@ let init_cstate_array = [x2c(init_state_array[0]), y2c(init_state_array[1]), 100
 // ++++++++++ MAIN SECTION ++++++++++
 
 // draws animation frame, moves animated objects to their next position obtained by calling the integrator 
-export function draw() {
+function draw() {
     // clear canvas and load background image 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(save_image, 0, 0);

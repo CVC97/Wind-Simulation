@@ -1,0 +1,37 @@
+/* style for the operation bar */
+.operation_bar {
+    position: relative;
+    height: 75px;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+
+/* style for the buttons */
+button {
+    position: relative;
+    line-height: 60px;
+    font-weight: bold;
+    width: 32.5%;
+    background: grey;
+    border: 0;
+}
+
+button:hover {
+    background: lightgrey;
+}
+
+
+
+
+/* navigation heading style */
+/* .navigation_headline {
+    font-weight: 800;
+    font-size: large;
+    color: black; 
+    font-family: Khula, sans-serif; 
+    text-align: center;
+    text-align: left;
+    margin-left: 40px;
+}  */

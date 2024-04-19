@@ -3,48 +3,54 @@
     <head>
         <title>Simulating Winds</title>
         <link rel="icon" href="images/icons/wind-icon-logo-3.png">
-        <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet navigation bar" href="navigation.css">
+        <link rel="stylesheet" href="styles/styles.css">
+        <link rel="stylesheet navigation" href="styles/navigation.css">
+        <meta charset="utf-8">
     </head>
     <body style="background-color:#222;">
-        <div class="main">
-            <div class="footer"> 2024 Carlo von Carnap, Physik und ihre Didaktik, Georg-August-Universität Göttingen</div>
-            <!-- <div >
-                <input class="checkmark" type="checkbox" id="lightmode" name="lightmode_checkbox" value="dark"/>
-                <script src="windsim.js"></script>
-            </div> -->
-            <h1  class="unselect_title"> 
-                <!-- <img src="images/icons/PoseidonPortrait.png" alt="AbstractWind" width="60" height="50">  -->
-                Simulating Winds
-            </h1>
-            <h2 class="unselect_subtitle"> by Carlo von Carnap </h1>
-            <canvas class="canvas_style", id="WindCanvas", width="1600" height="1000"></canvas>
-        </div>
-        <div class="navigation">
-            <div class="operation_bar">
-                <button id="start_button" align-items="left"></button>
-                <button id="fix_state_button" align-items="center">SAVE</button>
-                <button id="reset_button" align-items="center">RESET</button>
-                <script src="windsim.js"></script>
+        <div class="main_container">
+            <div class="head_row">
+                <h1 class="unselect_title"> 
+                    Simulating Winds
+                </h1>
+                <h2 class="unselect_subtitle"> 
+                    by Carlo von Carnap 
+                </h2>
             </div>
-            <form id="input_section">
+            <div class="canvas_row">
+                <canvas class="canvas_style" id="WindCanvas", width="1600" height="1000"></canvas>
+            </div>
+            <div class="foot_row">
+                <footer class="footer">            
+                    2024 Carlo von Carnap, Physik und ihre Didaktik, Georg-August-Universität Göttingen
+                </footer>
+            </div>
+
+        </div>
+        <div class="navigation_column">
+                <button id="start_button">START</button>
+                <button id="fix_state_button">SAVE</button>
+                <button id="reset_button">RESET</button>
+        </div>
+
+
+            <!-- <form id="input_section">
                 <div class="field_options">
                     <hr style="width:90%"> 
                     <h3 class="navigation_headline">Field Options</h3>
                     <hr style="width:90%">
                     <label for="number_equilines">Number of Equilines (5-25):</label> 
-                    <input id="number_equilines" name="number-equilines" type="number-input" value="13" min="5" max="35"/>
-                    <script src="windsim.js"></script>
+                    <input id="number_equilines" name="number-equilines" type="number-input" value="7" min="5" max="35"/>
                 </div>
                 <div class="field_options">
                     <hr style="width:90%"> 
                     <h3 class="navigation_headline">Geographic Options</h3>
                     <hr style="width:90%"> 
-                    <!-- <label for="number_rho">Pressure Gradient Force:</label> 
+                    <label for="number_rho">Pressure Gradient Force:</label> 
                     <input id="number_rho" name="number_rho" type="number-input" value="0.003"/>
-                    <script src="windsim.js"></script> -->
+                    <script src="windsim.js"></script>
                 </div>
-            </form>
-        </div> 
+            </form> -->
     </body>
+    <script src="./scripts/windsim.js" type="module"></script>
 </html> 

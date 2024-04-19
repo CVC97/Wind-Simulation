@@ -1,0 +1,71 @@
+/* style for the page layout */
+.main_container {
+    display: grid;
+    grid-template-columns: 75% 25%;
+    grid-template-rows: 100px 1f 75px;
+}
+
+.head_row {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.canvas_row {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.foot_row {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.navigation_column {
+    grid-column: 2;
+    grid-row: 1;
+    background-color: #EEE;
+}
+
+
+.unselect_title {
+    font-weight: 900;
+    font-size: xx-large;
+    color: #d3d4d3; 
+    font-family: Khula, sans-serif; 
+    text-align: center;
+}
+
+.unselect_subtitle {
+    font-weight: 50;
+    font-size: large;
+    color: #d3d4d3; 
+    font-family: Khula, sans-serif; 
+    text-align: center;
+}
+
+.footer { 
+    position: sticky; 
+    right: 0;
+    bottom: 0; 
+    text-align: right;
+    margin: 10px 10px 10px 20px;
+    z-index: 10;
+    color: grey;
+    font-family: Khula, sans-serif
+}
+
+.canvas_style {
+    height: 1fr;
+    width: 1fr;
+}
+
+
+
+/* .navigation {
+    
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 25%;
+} */
