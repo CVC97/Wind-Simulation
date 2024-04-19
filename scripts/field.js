@@ -80,6 +80,7 @@ export class PressureField {
     cy_low;
     high;
     low;
+    y_stretch;
 
     // binding methods because javascript is retarded
     get_pressure = this.get_pressure.bind(this);
@@ -106,7 +107,7 @@ export class PressureField {
         this.gamme = phys_params[2];
         this.latitude = phys_params[3];
 
-        this.y_stretch = y_stretch;
+        this.y_stretch = y_stretch / 10;
 
         // add centers of high and low pressure
         new PressureCenter(ctx, this.x_high, this.y_high, manim_red, "H");

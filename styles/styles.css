@@ -1,31 +1,12 @@
 /* style for the page layout */
-.main_container {
-    display: grid;
-    grid-template-columns: 75% 25%;
-    grid-template-rows: 100px 1f 75px;
+.footer { 
+    position: fixed; 
+    bottom: 0; 
+    text-align: right;
+    z-index: 10;
+    color: grey;
+    font-family: Khula, sans-serif
 }
-
-.head_row {
-    grid-column: 1;
-    grid-row: 1;
-}
-
-.canvas_row {
-    grid-column: 1;
-    grid-row: 2;
-}
-
-.foot_row {
-    grid-column: 1;
-    grid-row: 3;
-}
-
-.navigation_column {
-    grid-column: 2;
-    grid-row: 1;
-    background-color: #EEE;
-}
-
 
 .unselect_title {
     font-weight: 900;
@@ -43,29 +24,23 @@
     text-align: center;
 }
 
-.footer { 
-    position: sticky; 
-    right: 0;
-    bottom: 0; 
-    text-align: right;
-    margin: 10px 10px 10px 20px;
-    z-index: 10;
-    color: grey;
-    font-family: Khula, sans-serif
+.main {
+    display: grid;
+    position: fixed;
+    left: 0;
+    width: 75%;
 }
 
 .canvas_style {
-    height: 1fr;
-    width: 1fr;
+    height: 100%;
+    width: 100%;
 }
 
-
-
-/* .navigation {
-    
+.navigation {
+    background-color: #EEE;
     position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
     width: 25%;
-} */
+}

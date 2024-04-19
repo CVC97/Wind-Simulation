@@ -33,7 +33,7 @@ let low = -5                                    // pressure level of the 'low' (
 let high_center = [3.5, 0];                     // center of the 'high' (USER OPTION)
 let low_center = [-3.5, 0];                     // center of the 'low' (USER OPTION)
 
-let equilines = 23;                             // number of isobars minus 1 (USER OPTION)
+let equilines = 15;                             // number of isobars minus 1 (USER OPTION)
 let y_stretch = 0;                              // logarithmic zoom regarding the y-coordinate (USER OPTION, between 0 and 1)
 
 
@@ -57,6 +57,7 @@ let bool_coriolis_force = 1;                    // bool: will coriolis force be 
 let bool_friction_force = 0;                    // bool: will friction force be considered (USER OPTION)
 
 let animation_state = 0;                        // sets the animation state (0 for STOPPED, 1 for RUNNING)
+let raf;                                        // animation handler
 
 
 // parameter bundles
@@ -68,24 +69,9 @@ let init_cstate_array = [x2c(init_state_array[0]), y2c(init_state_array[1]), 100
 
 // ++++++++++ MAIN SECTION ++++++++++
 
-// draws animation frame, moves animated objects to their next position obtained by calling the integrator 
-function draw() {
-    // clear canvas and load background image 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(save_image, 0, 0);
-
-    // construct new animation objects
-    air_mass.state = verlet.step(air_mass.state, delta_t);
-    air_mass.draw();
-
-    // make_base();
-    raf = window.requestAnimationFrame(draw);
-} 
-
-
 // building the time-independent field
-const pressure_field = new PressureField(ctx, high_center, low_center, high, low, phys_params, y_stretch);
-const isobar_field = new IsobarField(ctx, pressure_field.get_pressure, equilines);
+let pressure_field = new PressureField(ctx, high_center, low_center, high, low, phys_params, y_stretch);
+let isobar_field = new IsobarField(ctx, pressure_field.get_pressure, equilines);
 
 
 // saving the canvas background for new frame and reset
@@ -101,18 +87,51 @@ let air_mass = new AirMass(ctx, pressure_field, init_cstate_array, force_params)
 air_mass.draw()
 
 
-// animation variables
-let raf;
-const start_button = document.getElementById("start_button");
-document.getElementById('start_button').innerHTML = "START";
-const fix_state_button = document.getElementById("fix_state_button");
-const reset_button = document.getElementById("reset_button");
+// ++++++++++ EVENT FUNCTIONS ++++++++++
 
-const lightmode_check = document.getElementById("lightmode");
-const input_section = document.getElementById("input_section");
+// draws animation frame, moves animated objects to their next position obtained by calling the integrator 
+function draw() {
+    // clear canvas and load background image 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(save_image, 0, 0);
+
+    // construct new animation objects
+    air_mass.state = verlet.step(air_mass.state, delta_t);
+    air_mass.draw();
+    
+    // make_base();
+    raf = window.requestAnimationFrame(draw);
+} 
+
+
+// update function
+function update_field() {
+    equilines = parseInt(document.getElementById("number_equilines").value);
+    y_stretch = parseInt(document.getElementById("y_stretch").value);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // building the time-independent field
+    pressure_field = new PressureField(ctx, high_center, low_center, high, low, phys_params, y_stretch);
+    isobar_field = new IsobarField(ctx, pressure_field.get_pressure, equilines);
+
+    // saving the canvas background for new frame and reset
+    save_image = new Image();
+    save_image.src = canvas.toDataURL("images/save_background.jpg");
+    reset_image = new Image();
+    reset_image.src = canvas.toDataURL("images/reset_background.jpg");
+
+    // setting up the integratorand placing the air mass
+    verlet = new Verlet(pressure_field, force_params);
+    air_mass = new AirMass(ctx, pressure_field, init_cstate_array, force_params)
+    air_mass.draw()
+}
+
+
+
+// ++++++++++ EVENT LISTENERS ++++++++++
 
 // start button
-start_button.addEventListener("click", (e) => {
+document.getElementById("start_button").addEventListener("click", (event) => {
     if (animation_state == 0) {
         raf = window.requestAnimationFrame(draw);
         animation_state = 1;
@@ -124,13 +143,15 @@ start_button.addEventListener("click", (e) => {
     }
 });
 
+
 // save state button
-fix_state_button.addEventListener("click", (e) => {
+document.getElementById("fix_state_button").addEventListener("click", (event) => {
     save_image.src = canvas.toDataURL("images/save_background.jpg");
 });
 
+
 // reset animation button
-reset_button.addEventListener("click", (e) => {
+document.getElementById("reset_button").addEventListener("click", (event) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(reset_image, 0, 0);
     save_image.src = canvas.toDataURL("images/save_background.jpg");
@@ -141,31 +162,12 @@ reset_button.addEventListener("click", (e) => {
 });
 
 
-// // FIX: AIR MASS now VISIBLE AT START
-// let air_mass = AirMass(ctx, pressure_field)
-// AirMass.draw();
+// equilines input
+// document.getElementById("number_equilines").addEventListener("change", (event) => {
+//     if (event.key == 13 || event.key == "Enter") {
+//         update_field;
+//     }
+// });
 
-
-// function update_input() {
-//     new PressureCenter(0,0, manim_blue, "WHY??!?!?!");
-//     equilines = parseInt(document.getElementById("number_equilines").value); 
-//     console.log(equilines)
-//     rho = parseInt(document.getElementById("number_rho").value); 
-
-//     pressure_field = new PressureField();
-//     isobar_field = new IsobarField(pressure_field.get_pressure, x_range = [-8, 8], y_range = [-5, 5], isobar_range = [-7, 7]);
-// }
-
-// // function show_image() {
-// //     var img = document.createElement("img");
-// //     img.src = "images/clown.jpg";
-// //     img.width = 500;
-// //     img.height = 500;
-// //     document.body.appendChild(img);
-// // }
-
-
-// // connecting number input
-
-// input_section.addEventListener("onkeypress", update_input);
-// lightmode_check.addEventListener("lightmode", show_image);
+document.getElementById("number_equilines").addEventListener("change", update_field);
+document.getElementById("y_stretch").addEventListener("change", update_field);

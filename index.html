@@ -8,49 +8,121 @@
         <meta charset="utf-8">
     </head>
     <body style="background-color:#222;">
-        <div class="main_container">
-            <div class="head_row">
-                <h1 class="unselect_title"> 
-                    Simulating Winds
-                </h1>
-                <h2 class="unselect_subtitle"> 
-                    by Carlo von Carnap 
-                </h2>
-            </div>
-            <div class="canvas_row">
-                <canvas class="canvas_style" id="WindCanvas", width="1600" height="1000"></canvas>
-            </div>
-            <div class="foot_row">
-                <footer class="footer">            
-                    2024 Carlo von Carnap, Physik und ihre Didaktik, Georg-August-Universität Göttingen
-                </footer>
-            </div>
-
+        <div class="main">
+            <h1 style="height: 10px;" class="unselect_title"> 
+                Simulating Winds
+            </h1>
+            <h2 class="unselect_subtitle"> 
+                by Carlo von Carnap 
+            </h2>
+            <canvas class="canvas_style" id="WindCanvas", width="1600" height="1000"></canvas>
+            <footer>            
+                <div class="footer"> 2024 Carlo von Carnap, Physik und ihre Didaktik, Georg-August-Universität Göttingen</div>
+            </footer>
         </div>
-        <div class="navigation_column">
-                <button id="start_button">START</button>
-                <button id="fix_state_button">SAVE</button>
-                <button id="reset_button">RESET</button>
-        </div>
-
-
-            <!-- <form id="input_section">
-                <div class="field_options">
-                    <hr style="width:90%"> 
-                    <h3 class="navigation_headline">Field Options</h3>
-                    <hr style="width:90%">
-                    <label for="number_equilines">Number of Equilines (5-25):</label> 
-                    <input id="number_equilines" name="number-equilines" type="number-input" value="7" min="5" max="35"/>
+        <div class="navigation">
+            <div class="operation_bar">
+                <button style ="float: left; width: 33.3%" id="start_button">START</button>
+                <button style ="float: center; width: 33.3%" id="fix_state_button">SAVE</button>
+                <button style ="float: right; width: 33.3%" id="reset_button">RESET</button>
+            </div>
+            <div>
+                <h3 class="navigation_headline">Field Options</h3>
+                <hr style="width:90%">
+                <div>
+                    <div>
+                        <label for="number_equilines">Number of Isobars:</label> 
+                    </div>
+                    <div>
+                        <input id="number_equilines" name="number-equilines" type="range" value="20" min="5" max="35"/>
+                    </div>
                 </div>
-                <div class="field_options">
-                    <hr style="width:90%"> 
-                    <h3 class="navigation_headline">Geographic Options</h3>
-                    <hr style="width:90%"> 
-                    <label for="number_rho">Pressure Gradient Force:</label> 
-                    <input id="number_rho" name="number_rho" type="number-input" value="0.003"/>
-                    <script src="windsim.js"></script>
+                <div>
+                    <div>
+                        <label for="y_stretch">y-Distortion:</label> 
+                    </div>
+                    <div>
+                        <input id="y_stretch" name="y-stretch" type="range" value="0" min="0" max="10"/>
+                    </div>
                 </div>
-            </form> -->
+            </div>
+            <div>
+                <h3 class="navigation_headline">Geographic Options</h3>
+                <hr style="width:90%"> 
+                <div>
+                    <div>
+                        <label for="number_rho">Pressure Gradient Force:</label> 
+                    </div>
+                    <div>
+                        <input id="number_rho" name="number_rho" type="range" value="0.003"  min="0" max="10"/>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="number_omega">Coriolis Force:</label> 
+                    </div>
+                    <div>
+                        <input id="number_omega" name="number_omega" type="range" value="0.003"  min="0" max="10"/>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="number_gamma">Friction Force:</label> 
+                    </div>
+                    <div>
+                        <input id="number_gamma" name="number_gamma" type="range" value="0.003"  min="0" max="10"/>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="navigation_headline">Initial Conditions</h3>
+                <hr style="width:90%">
+                <div>
+                    <div>
+                        <label for="init_x">x:</label>
+                    </div>
+                    <div>
+                        <input id="init_x" name="init_x" type="number-input" value="0.003"/>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="init_y">y:</label>
+                    </div>
+                    <div>
+                        <input id="init_y" name="init_y" type="number-input" value="0.003"/>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="init_vx">x-velocity:</label>
+                    </div>
+                    <div>
+                        <input id="init_vx" name="init_vx" type="number-input" value="0"/>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="init_vy">y-velocity:</label>
+                    </div>
+                    <div>
+                        <input id="init_vy" name="init_vy" type="number-input" value="0"/>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="navigation_headline">Animation Speed</h3>
+                <hr style="width:90%">    
+                <div>
+                    <div>
+                        <label for="delta_t">Animation Speed:</label>
+                    </div>
+                    <div>
+                        <input id="delta_x" name="delta_x" type="range" value="0.003"/>
+                    </div>
+                </div> 
+            </div>
+        </div> 
     </body>
     <script src="./scripts/windsim.js" type="module"></script>
 </html> 

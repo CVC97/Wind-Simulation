@@ -51,8 +51,3 @@ export class Verlet {
         return state_array;
     }
 }
-
-
-
-
-
