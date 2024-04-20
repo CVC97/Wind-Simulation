@@ -31,8 +31,13 @@
     width: 75%;
 }
 
+.main_head_style {
+    height: 100px;
+    width: 100%;
+}
+
 .canvas_style {
-    height: 90%;
+    height: 100%;
     width: 100%;
 }
 
