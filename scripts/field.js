@@ -1,6 +1,7 @@
 // ++++++++++ PRESSURE FIELD CLASSES ++++++++++
 
-import {x2c, y2c, manim_red, manim_blue} from "./windsim.js"
+import { manim_red, manim_blue} from "./windsim.js"
+import { x2c, y2c, s2ystretch } from "./utilities.js"
 
 
 // draws a center of high / low pressure given natural coordinates, color, and content
@@ -104,10 +105,10 @@ export class PressureField {
 
         this.rho = phys_params[0];
         this.omega = phys_params[1];
-        this.gamme = phys_params[2];
+        this.gamma = phys_params[2];
         this.latitude = phys_params[3];
 
-        this.y_stretch = y_stretch / 10;
+        this.y_stretch = s2ystretch(y_stretch);
 
         // add centers of high and low pressure
         new PressureCenter(ctx, this.x_high, this.y_high, manim_red, "H");
@@ -117,8 +118,8 @@ export class PressureField {
     // WARUM ERKENNT ER DIE THIS. VARIABLEN NICHT???!?!?!?
     get_pressure(x, y) {
         const smoothing_factor = 10e-8;
-        let pressure_high = this.high / (Math.sqrt(((x-this.cx_high) / 100)**2 + ((y-this.cy_high) / 10**(2+this.y_stretch))**2) + smoothing_factor);
-        let pressure_low = this.low / (Math.sqrt(((x-this.cx_low) / 100)**2 + ((y-this.cy_low) / 10**(2+this.y_stretch))**2) + smoothing_factor);
+        let pressure_high = this.high / (Math.sqrt(((x-this.cx_high) / 100)**2 + ((y-this.cy_high) / (100*this.y_stretch))**2) + smoothing_factor);
+        let pressure_low = this.low / (Math.sqrt(((x-this.cx_low) / 100)**2 + ((y-this.cy_low) / (100*this.y_stretch))**2) + smoothing_factor);
         return pressure_high + pressure_low;
     } 
 

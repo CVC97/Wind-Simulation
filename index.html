@@ -34,7 +34,7 @@
                         <label for="number_equilines">Number of Isobars:</label> 
                     </div>
                     <div>
-                        <input id="number_equilines" name="number-equilines" type="range" value="20" min="5" max="35"/>
+                        <input id="number_equilines" name="number-equilines" type="range" value="20" min="5" max="35" step="5"/>
                     </div>
                 </div>
                 <div>
@@ -42,7 +42,7 @@
                         <label for="y_stretch">y-Distortion:</label> 
                     </div>
                     <div>
-                        <input id="y_stretch" name="y-stretch" type="range" value="0" min="0" max="10"/>
+                        <input id="y_stretch" name="y-stretch" type="range" value="0" min="0" max="10" step="2"/>
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                         <label for="number_rho">Pressure Gradient Force:</label> 
                     </div>
                     <div>
-                        <input id="number_rho" name="number_rho" type="range" value="0.003"  min="0" max="10"/>
+                        <input id="number_rho" name="number_rho" type="range" value="0"  min="-10" max="10"/>
                     </div>
                 </div>
                 <div>
@@ -62,7 +62,7 @@
                         <label for="number_omega">Coriolis Force:</label> 
                     </div>
                     <div>
-                        <input id="number_omega" name="number_omega" type="range" value="0.003"  min="0" max="10"/>
+                        <input id="number_omega" name="number_omega" type="range" value="0"  min="-10" max="10"/>
                     </div>
                 </div>
                 <div>
@@ -70,7 +70,7 @@
                         <label for="number_gamma">Friction Force:</label> 
                     </div>
                     <div>
-                        <input id="number_gamma" name="number_gamma" type="range" value="0.003"  min="0" max="10"/>
+                        <input id="number_gamma" name="number_gamma" type="range" value="0"  min="-10" max="10"/>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                         <label for="init_x">x:</label>
                     </div>
                     <div>
-                        <input id="init_x" name="init_x" type="number-input" value="0.003"/>
+                        <input id="init_x" name="init_x" type="number-input" value="2"/>
                     </div>
                 </div>
                 <div>
@@ -90,7 +90,7 @@
                         <label for="init_y">y:</label>
                     </div>
                     <div>
-                        <input id="init_y" name="init_y" type="number-input" value="0.003"/>
+                        <input id="init_y" name="init_y" type="number-input" value="1"/>
                     </div>
                 </div>
                 <div>
@@ -118,7 +118,7 @@
                         <label for="delta_t">Animation Speed:</label>
                     </div>
                     <div>
-                        <input id="delta_x" name="delta_x" type="range" value="0.003"/>
+                        <input id="delta_t" name="delta_t" type="range" value="0"  min="-10" max="10"/>
                     </div>
                 </div> 
             </div>

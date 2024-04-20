@@ -1,6 +1,6 @@
 // ++++++++++ ANIMATED OBJECTS SECTION ++++++++++
 
-import {x2c, y2c, manim_red, manim_blue} from "./windsim.js"
+import {manim_red, manim_blue} from "./windsim.js"
 
 
 // draws an arrow given start / end point, color, width, and stroke dash
