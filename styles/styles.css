@@ -37,7 +37,8 @@
 }
 
 .canvas_style {
-    height: 100%;
+    position: relative;
+    height: 95%;
     width: 100%;
 }
 

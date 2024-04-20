@@ -62,19 +62,17 @@ button:hover {
     margin-left: 0px;
 }
 
-
 .checkbox_style {
     margin-left: 15px;
     width: 15px;
     margin-right: 15px;
 }
 
-
 .slider_style {
     position: relative;
     width: 70%;
     height: 5px;
-    margin: 15px 30px 20px 75px;;
+    margin: 15px 15% 20px 15%;
     /* background-color: #8a8a8a; */
     background: #222;
     box-shadow: 1px 1px 1px #222;
@@ -87,19 +85,17 @@ button:hover {
     position: absolute;
 }
 
-
 .input_grid {
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 75px 75px;
 }
 
-
 .input_style {
     position: relative;
     width: 40%;
     height: 25px;
-    margin: 15px 30px 20px 75px;
+    margin: 15px 30% 20px 30%;
     background-color: #d3d3d3;
     text-align: right;
     font-weight: bold;
