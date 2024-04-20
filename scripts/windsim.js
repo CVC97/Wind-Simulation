@@ -131,6 +131,29 @@ function update_params() {
 }
 
 
+// function to update force parameters (aka bool values for coriolis force and friction force)
+function update_bool() {
+    if (document.getElementById("check_omega").checked == true) {
+        bool_coriolis_force = 1;
+        document.getElementById("number_omega").disabled = false;
+    } else {
+        bool_coriolis_force = 0;
+        document.getElementById("number_omega").disabled = true;
+    }
+    if (document.getElementById("check_gamma").checked == true) {
+        bool_friction_force = 1;
+        document.getElementById("number_gamma").disabled = false;
+    } else {
+        bool_friction_force = 0;
+        document.getElementById("number_gamma").disabled = true;
+    }
+    force_params = [bool_coriolis_force, bool_friction_force];
+    verlet = new Verlet(pressure_field, force_params, delta_t);
+    air_mass = new AirMass(ctx, pressure_field, air_mass.state, force_params);
+    air_mass.draw();
+}
+
+
 
 // ++++++++++ EVENT LISTENERS ++++++++++
 
@@ -173,10 +196,14 @@ document.getElementById("reset_button").addEventListener("click", (event) => {
 });
 
 
-// track slider interactions
+// track interactions with the navigation bar
 document.getElementById("number_equilines").addEventListener("change", update_field);
 document.getElementById("y_stretch").addEventListener("change", update_field);
+
 document.getElementById("number_rho").addEventListener("change", update_params);
 document.getElementById("number_omega").addEventListener("change", update_params);
 document.getElementById("number_gamma").addEventListener("change", update_params);
 document.getElementById("delta_t").addEventListener("change", update_params);
+
+document.getElementById("check_omega").addEventListener("click", update_bool);
+document.getElementById("check_gamma").addEventListener("click", update_bool);

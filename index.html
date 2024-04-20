@@ -26,103 +26,112 @@
                 <button style ="float: center; width: 33.3%" id="fix_state_button">SAVE</button>
                 <button style ="float: right; width: 33.3%" id="reset_button">RESET</button>
             </div>
-            <div>
-                <h3 class="navigation_headline">Field Options</h3>
-                <hr style="width:90%">
+            <div class="parameter_column">
                 <div>
+                    <h3 class="navigation_headline">Field Options</h3>
+                    <hr style="width:90%">
                     <div>
-                        <label for="number_equilines">Number of Isobars:</label> 
+                        <div>
+                            <label for="number_equilines" class="descriptor_headline" >Number of Isobars:</label> 
+                        </div>
+                        <div>
+                            <input class="slider_style" id="number_equilines" name="number-equilines" type="range" value="20" min="5" max="35" step="5"/>
+                        </div>
                     </div>
                     <div>
-                        <input id="number_equilines" name="number-equilines" type="range" value="20" min="5" max="35" step="5"/>
+                        <div>
+                            <label for="y_stretch" class="descriptor_headline" >y-Distortion:</label> 
+                        </div>
+                        <div>
+                            <input class="slider_style" id="y_stretch" name="y-stretch" type="range" value="0" min="0" max="10" step="2"/>
+                        </div>
                     </div>
                 </div>
                 <div>
+                    <h3 class="navigation_headline">Geographic Options</h3>
+                    <hr style="width:90%"> 
                     <div>
-                        <label for="y_stretch">y-Distortion:</label> 
+                        <div>
+                            <label for="number_rho" class="descriptor_headline" >Pressure Gradient Force:</label> 
+                        </div>
+                        <div>
+                            <input class="slider_style" id="number_rho" name="number_rho" type="range" value="0"  min="-10" max="10"/>
+                        </div>
                     </div>
                     <div>
-                        <input id="y_stretch" name="y-stretch" type="range" value="0" min="0" max="10" step="2"/>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h3 class="navigation_headline">Geographic Options</h3>
-                <hr style="width:90%"> 
-                <div>
-                    <div>
-                        <label for="number_rho">Pressure Gradient Force:</label> 
-                    </div>
-                    <div>
-                        <input id="number_rho" name="number_rho" type="range" value="0"  min="-10" max="10"/>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <label for="number_omega">Coriolis Force:</label> 
+                        <div>
+                            
+                        </div>
+                        <div>
+                            <input type="checkbox" id="check_omega" class="checkbox_style" checked="true">
+                            <label for="number_omega" class="descriptor_headline_checkbox" >Coriolis Force:</label> 
+                        </div>
+                        <div>
+                            <input class="slider_style" id="number_omega" name="number_omega" type="range" value="0"  min="-10" max="10"/>
+                        </div>
                     </div>
                     <div>
-                        <input id="number_omega" name="number_omega" type="range" value="0"  min="-10" max="10"/>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <label for="number_gamma">Friction Force:</label> 
-                    </div>
-                    <div>
-                        <input id="number_gamma" name="number_gamma" type="range" value="0"  min="-10" max="10"/>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h3 class="navigation_headline">Initial Conditions</h3>
-                <hr style="width:90%">
-                <div>
-                    <div>
-                        <label for="init_x">x:</label>
-                    </div>
-                    <div>
-                        <input id="init_x" name="init_x" type="number-input" value="2"/>
+                        <div>
+                            <input type="checkbox" id="check_gamma" class="checkbox_style">
+                            <label for="number_gamma" class="descriptor_headline_checkbox" >Friction Force:</label> 
+                        </div>
+                        <div>
+                            <input class="slider_style" id="number_gamma" name="number_gamma" type="range" value="0"  min="-10" max="10"  disabled="true"/>
+                        </div>
                     </div>
                 </div>
                 <div>
-                    <div>
-                        <label for="init_y">y:</label>
-                    </div>
-                    <div>
-                        <input id="init_y" name="init_y" type="number-input" value="1"/>
+                    <h3 class="navigation_headline">Initial Conditions</h3>
+                    <hr style="width:90%">
+                    <div class="input_grid">
+                        <div>
+                            <div>
+                                <label for="init_x" class="descriptor_headline" >x-Position:</label>
+                            </div>
+                            <div>
+                                <input id="init_x" class="input_style" name="init_x" type="number-input" value="2"/>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <label for="init_y" class="descriptor_headline" >y-Position:</label>
+                            </div>
+                            <div>
+                                <input id="init_y" class="input_style" name="init_y" type="number-input" value="1"/>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <label for="init_vx" class="descriptor_headline" >x-Velocity:</label>
+                            </div>
+                            <div>
+                                <input id="init_vx" class="input_style" name="init_vx" type="number-input" value="0"/>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <label for="init_vy" class="descriptor_headline" >y-Velocity:</label>
+                            </div>
+                            <div>
+                                <input id="init_vy" class="input_style" name="init_vy" type="number-input" value="0"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div>
+                    <h3 class="navigation_headline">Animation Setup</h3>
+                    <hr style="width:90%">    
                     <div>
-                        <label for="init_vx">x-velocity:</label>
-                    </div>
-                    <div>
-                        <input id="init_vx" name="init_vx" type="number-input" value="0"/>
-                    </div>
+                        <div>
+                            <label for="delta_t" class="descriptor_headline" >Animation Speed:</label>
+                        </div>
+                        <div>
+                            <input class="slider_style" id="delta_t" name="delta_t" type="range" value="0"  min="-10" max="10"/>
+                        </div>
+                    </div> 
                 </div>
-                <div>
-                    <div>
-                        <label for="init_vy">y-velocity:</label>
-                    </div>
-                    <div>
-                        <input id="init_vy" name="init_vy" type="number-input" value="0"/>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h3 class="navigation_headline">Animation Speed</h3>
-                <hr style="width:90%">    
-                <div>
-                    <div>
-                        <label for="delta_t">Animation Speed:</label>
-                    </div>
-                    <div>
-                        <input id="delta_t" name="delta_t" type="range" value="0"  min="-10" max="10"/>
-                    </div>
-                </div> 
-            </div>
-        </div> 
+            </div> 
+        </div>
     </body>
     <script src="./scripts/windsim.js" type="module"></script>
 </html> 

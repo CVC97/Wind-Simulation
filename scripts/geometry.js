@@ -82,7 +82,7 @@ function coriolis_arrow(ctx, state, f_state, arrow_stretch) {
     let f_x = f_state[2];
     let f_y = f_state[3];
 
-    new Arrow(ctx, [x, y], [x+f_x*arrow_stretch, y+f_y*arrow_stretch], "#D3D3D3");
+    new Arrow(ctx, [x, y], [x+f_x*arrow_stretch, y+f_y*arrow_stretch], "grey");
 }
 
 
@@ -93,7 +93,7 @@ function friction_arrow(ctx, state, f_state, arrow_stretch) {
     let f_x = f_state[2];
     let f_y = f_state[3];
     
-    new Arrow(ctx, [x, y], [x+f_x*arrow_stretch, y+f_y*arrow_stretch], manim_blue);
+    new Arrow(ctx, [x, y], [x+f_x*arrow_stretch, y+f_y*arrow_stretch], "black");
 
 }
 
@@ -105,7 +105,7 @@ function total_arrow(ctx, state, f_state, arrow_stretch) {
     let f_x = f_state[2];
     let f_y = f_state[3]; 
 
-    new Arrow(ctx, [x, y], [x+f_x*arrow_stretch, y+f_y*arrow_stretch], "black");
+    new Arrow(ctx, [x, y], [x+f_x*arrow_stretch, y+f_y*arrow_stretch], "white");
 }
 
 
