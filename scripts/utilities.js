@@ -41,5 +41,5 @@ export function s2gamma(s_gamma) {
 }
 
 export function s2dt(s_dt) {
-    return 0.025*10**(s_dt/5);
+    return 0.025*10**(s_dt/10);
 }
