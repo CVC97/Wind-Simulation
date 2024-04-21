@@ -43,7 +43,7 @@ export class IsobarField {
         this.cy_canvas_max = y2c(y_range[1]);
 
         const d_isobar = 0.005;                                                                 // proximity to the values of the isobars
-        const isobar_increment = (isobar_range[1]-isobar_range[0]) / equilines;                 // increment between the individual isobars
+        const isobar_increment = (isobar_range[1]-isobar_range[0]) / (equilines - 1);           // increment between the individual isobars
         let isobar_array = [];                                                                  // declaring array containing the exact values of the isobars
         
         // constructing array with the exact isobar values
@@ -54,9 +54,9 @@ export class IsobarField {
         // iterating through the pixels of the canvas
         for (let cy = this.cy_canvas_min; cy > this.cy_canvas_max; cy -= 0.25) {
             for (let cx = this.cx_canvas_min; cx < this.cx_canvas_max; cx += 0.25) {
-                let scalar_field_value = scalar_field(cx, cy);                                    // calculating the value of the sclalar field at position (x, y)
+                let scalar_field_value = scalar_field(cx, cy);                                  // calculating the value of the sclalar field at position (x, y)
                 // iterating through the possible values for the isobars
-                for (let i_equiline = 0; i_equiline < equilines+1; i_equiline += 1) {
+                for (let i_equiline = 0; i_equiline < equilines; i_equiline += 1) {
                     let isobar_value = isobar_array[i_equiline];                                // accessing current array element (exact isobar value)
                     if (scalar_field_value > isobar_value-d_isobar && scalar_field_value < isobar_value+d_isobar) {
                         new IsobarPixel(ctx, cx, cy, manim_red, i_equiline/equilines);
