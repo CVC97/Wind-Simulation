@@ -23,7 +23,7 @@ let low = -5                                    // pressure level of the 'low' (
 let high_center = [3.5, 0];                     // center of the 'high' (USER OPTION)
 let low_center = [-3.5, 0];                     // center of the 'low' (USER OPTION)
 
-let equilines = 15;                             // number of isobars minus 1 (USER OPTION)
+let equilines = 20;                             // number of isobars minus 1 (USER OPTION)
 let y_stretch = 0;                              // logarithmic zoom regarding the y-coordinate (USER OPTION, between 0 and 1)
 
 // physical parameters of the system 
