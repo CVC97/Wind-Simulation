@@ -3,11 +3,21 @@
 
 // global functions to transform calculation coordinates (center (0, 0), x-range [-8, 8], y-width [-5, 5])
 export function x2c(x) {
-    return 50*(x+8);
+    return 100*(x+8);
 }
 
 export function y2c(y) {
-    return 50*(-y+5);
+    return 100*(-y+5);
+}
+
+
+// global functions to calculate canvas coordinates to calculation coordinates
+export function c2x(cx) {
+    return cx / 100 - 8;
+}
+
+export function c2y(cy) {
+    return -cy / 100 + 5;
 }
 
 
@@ -31,5 +41,5 @@ export function s2gamma(s_gamma) {
 }
 
 export function s2dt(s_dt) {
-    return 0.025*10**(s_dt/20);
+    return 0.025*10**(s_dt/5);
 }
