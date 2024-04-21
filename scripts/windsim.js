@@ -47,6 +47,7 @@ let bool_friction_force = 0;                    // bool: will friction force be 
 
 let animation_state = 0;                        // sets the animation state (0 for STOPPED, 1 for RUNNING)
 let raf;                                        // animation handler
+let language;                                   // language check
 
 
 // parameter bundles
@@ -74,6 +75,7 @@ reset_image.src = canvas.toDataURL("images/reset_background.jpg");
 let verlet = new Verlet(pressure_field, force_params, delta_t);
 let air_mass = new AirMass(ctx, pressure_field, init_cstate_array, force_params)
 air_mass.draw()
+
 
 
 // ++++++++++ EVENT FUNCTIONS ++++++++++
@@ -207,3 +209,7 @@ document.getElementById("delta_t").addEventListener("change", update_params);
 
 document.getElementById("check_omega").addEventListener("click", update_bool);
 document.getElementById("check_gamma").addEventListener("click", update_bool);
+
+
+
+// ++++++++++ HOVER DESCRIPTIONS ++++++++++
