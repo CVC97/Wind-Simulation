@@ -1,8 +1,9 @@
-// ++++++++++ PRESSURE FIELD CLASSES ++++++++++
-
 import { manim_red, manim_blue} from "./windsim.js"
 import { x2c, y2c, s2ystretch } from "./utilities.js"
 
+
+
+// ++++++++++ PRESSURE FIELD CLASSES ++++++++++
 
 // draws a center of high / low pressure given natural coordinates, color, and content
 class PressureCenter {

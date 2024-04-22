@@ -1,7 +1,8 @@
-// ++++++++++ ANIMATED OBJECTS SECTION ++++++++++
-
 import {manim_red, manim_blue} from "./windsim.js"
 
+
+
+// ++++++++++ ANIMATED OBJECTS SECTION ++++++++++
 
 // draws an arrow given start / end point, color, width, and stroke dash
 class Arrow {

@@ -24,9 +24,7 @@ export function c2y(cy) {
 // calculates slider outputs to animation parameters
 export function s2ystretch(s_ystretch) {
     return 10**(s_ystretch/10);
-    // return 1;
 }
-
 
 export function s2rho(s_rho) {
     return 0.003*10**(s_rho/10);
