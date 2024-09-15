@@ -142,7 +142,7 @@ export class PressureField {
         let v_y = state_array[3];
         let f_coriolis_x = -this.omega * v_y * 2*Math.sin(this.latitude * 2*Math.PI / 360);
         let f_coriolis_y = this.omega * v_x * 2*Math.sin(this.latitude * 2*Math.PI / 360);
-        return [v_x, v_y, f_coriolis_x, f_coriolis_y];
+        return [0, 0, f_coriolis_x, f_coriolis_y];
     }
 
     // calculates force array with respect to the friction force given a state
@@ -151,6 +151,6 @@ export class PressureField {
         let v_y = state_array[3];
         let f_gamma_x = -this.gamma * v_x;
         let f_gamma_y = -this.gamma * v_y;
-        return [v_x, v_y, f_gamma_x, f_gamma_y];
+        return [0, 0, f_gamma_x, f_gamma_y];
     }
 }
